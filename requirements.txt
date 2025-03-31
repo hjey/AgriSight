@@ -1,0 +1,11 @@
+torch
+torchvision
+torchaudio
+fastapi
+uvicorn
+celery
+redis
+pytest
+jinja2
+python-multipart
+opencv-python

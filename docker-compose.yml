@@ -1,0 +1,35 @@
+services:
+  web:
+    build: .
+    container_name: web_pj_1-web
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    volumes:
+      - ./app:/app
+      - ./data:/data # data 폴더를 컨테이너에 마운트
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  redis:
+    image: redis:alpine
+    container_name: web_pj_1-redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  worker:
+    build: .
+    container_name: web_pj_1-celery
+    depends_on:
+      - redis
+      - web
+    volumes:
+      - .:/app
+      - ./data:/data # worker에서도 data 폴더를 마운트
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    command: celery -A app.worker worker --loglevel=info
