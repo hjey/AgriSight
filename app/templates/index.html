@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ open: false }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Analyzer</title>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel='stylesheet' type='text/css' href="/static/css/style.css">
+</head>
+
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen font-mono overflow-hidden">
+    <header class="w-full max-w-[640px] bg-white shadow-md p-4 text-center font-semibold text-gray-700 text-2xl font-mono tracking-wider rounded-lg shadow-lg fixed top-8">
+        <p>YouTube Video Analyzer</p>
+    </header>
+    
+    <main class="w-full max-w-[1100px] px-12 py-7 bg-white rounded-lg shadow-lg my-28 flex flex-col h-[calc(100vh-180px)]">
+        <small class='text-center pb-4 text-gray-500'> Whisper 모델을 통해 유투브 영상의 자막을, BART로 키워드 및 영상 요약본을, BERT로 NER을 얻어, 영상과 함께 보여줍니다.</small>
+
+        <!-- ① 유튜브 URL 입력 및 버튼 -->
+        <div class="mb-4 px-24">
+            <div class="flex items-center gap-4 h-10">
+                <label class="font-semibold">유튜브 선택: </label>
+                <select id="option-select" class="h-8 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-[60%]">
+                    <option>선택하세요.</option>
+                    <option value="UibfDUPJAEU">Commencement of Author J.K Rowling</option>
+                    <option value="7dETo7ECQKc">Commencement of Journalist Maria Ressa</option>
+                    <option value="Gzu9S5FL-Ug">Commencement of Justice John Roberts</option>
+                    <option value="npfQcvUcQYM">Commencement of Philanthropist Melinda Gates</option>
+                    <option value="other">그 외 (URL 입력)</option>
+                </select>
+            </div>
+    
+            <div class="relative mt-2 px-24 mx-2">
+                <input id="youtube-url" type="text" placeholder="직접 입력"
+                    class="h-8 w-[81%] px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200" disabled>
+                <button id="loadVideoButton"
+                    class="absolute right-0 top-0 h-8 w-28 bg-blue-500 text-white rounded-lg hover:bg-blue-600">실 행</button>
+            </div>
+        </div>
+    
+        <!-- ② 동영상 + 키워드 및 요약 정보 -->
+        <div class="border border-gray-300 grid grid-cols-5 gap-4 rounded-lg flex-1 min-h-[220px]">
+            <!-- 왼쪽: 동영상 표시 구간 -->
+            <div class="p-4 rounded-lg flex items-center justify-center col-span-3">
+                <video id="videoElement" class="max-w-full object-contain hidden" allowfullscreen controls></video>
+            </div>
+            
+            <!-- 오른쪽: 키워드 및 요약 정보 -->
+            <div class="bg-gray-200 p-4 overflow-auto flex-none min-h-[220px] col-span-2">
+                <div class="flex items-center gap-2">
+                    <p id="title"></p>
+                </div>
+                <div class="flex items-center gap-2">
+                    ><p id="ner"></p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <p id="keyword"></p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <p id="summary"></p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="w-full text-center p-4 text-gray-500 mt-6 bg-gray-100 shadow-md fixed bottom-0 ">
+        &copy; 2025 Hjey Website. All rights reserved.
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
