@@ -48,18 +48,22 @@
             </div>
             
             <!-- 오른쪽: 키워드 및 요약 정보 -->
-            <div class="bg-gray-200 p-4 overflow-auto flex-none min-h-[220px] col-span-2">
-                <div class="flex items-center gap-2">
+            <div id="right_block" class="bg-gray-200 p-4 overflow-auto flex-none min-h-[220px] col-span-2">
+                <div class="flex items-center gap-2 py-2">
+                    <small>Title:</small>
                     <p id="title"></p>
                 </div>
-                <div class="flex items-center gap-2">
-                    ><p id="ner"></p>
+                <div class="flex items-center gap-2 py-2">
+                    <small>NER:</small>
+                    <p id="ner"></p>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 py-2">
+                    <small>Keyword:</small>
                     <p id="keyword"></p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <p id="summary"></p>
+                <div class="flex items-center gap-2 py-2">
+                    <small>Subtitle:</small>
+                    <p id="subtitlesContainer"></p>
                 </div>
             </div>
         </div>
