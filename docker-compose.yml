@@ -8,7 +8,7 @@ services:
       - redis
     volumes:
       - ./app:/app
-      - ./data:/data # data 폴더를 컨테이너에 마운트
+      - ./data:/data
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
@@ -28,7 +28,7 @@ services:
       - web
     volumes:
       - .:/app
-      - ./data:/data # worker에서도 data 폴더를 마운트
+      - ./data:/data
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0

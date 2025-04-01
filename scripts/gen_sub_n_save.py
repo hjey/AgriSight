@@ -27,7 +27,7 @@ def save_subtitles_to_srt(subtitles, output_filename="subtitles_trimmed.srt"):
     if not subtitles:
         return  # 자막이 없으면 함수 종료
 
-    max_duration = subtitles[-1]["end"]  # 🚨 마지막 자막의 종료 시간을 기준으로 설정
+    max_duration = subtitles[-1]["end"]  # 마지막 자막의 종료 시간을 기준으로 설정
 
     with open(output_filename, "w", encoding="utf-8") as f:
         for idx, segment in enumerate(subtitles):
@@ -49,13 +49,13 @@ def save_subtitles_to_srt(subtitles, output_filename="subtitles_trimmed.srt"):
             f.write(f"{idx + 1}\n{start_time} --> {end_time}\n{segment['text']}\n\n")
 
 
-# 1️⃣ Whisper로 자막 생성
+# Whisper로 자막 생성
 subtitles = generate_subtitles(video_path)
 
-# 2️⃣ ffmpeg로 silence_end 값 가져오기
+# ffmpeg로 silence_end 값 가져오기
 silence_offset = get_silence_end(video_path)
 
-# 3️⃣ 첫 번째 자막만 silence_end로 보정
+# 첫 번째 자막만 silence_end로 보정
 if subtitles:
     first_subtitle_start = subtitles[0]["start"]
 
@@ -64,9 +64,9 @@ if subtitles:
     if time_shift > 0:  # silence_end가 첫 자막보다 크면 이동
         subtitles[0]["start"] = silence_offset
 
-        # 🚨 첫 번째 자막의 종료 시간을 두 번째 자막의 시작 시간과 맞춤
+        # 첫 번째 자막의 종료 시간을 두 번째 자막의 시작 시간과 맞춤
         if len(subtitles) > 1:
             subtitles[0]["end"] = subtitles[1]["start"]
 
-# 4️⃣ 보정된 자막을 SRT로 저장
+# 보정된 자막을 SRT로 저장
 save_subtitles_to_srt(subtitles)

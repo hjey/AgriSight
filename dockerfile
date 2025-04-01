@@ -9,10 +9,10 @@ WORKDIR /app
 # 코드 복사
 COPY ./app /app
 
-# ✅ requirements.txt를 컨테이너로 복사
+# requirements.txt를 컨테이너로 복사
 COPY requirements.txt /app
 
-# ✅ 의존성 설치
+# 의존성 설치
 RUN pip install --no-cache-dir -r requirements.txt
 RUN apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0
 
