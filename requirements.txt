@@ -9,3 +9,6 @@ pytest
 jinja2
 python-multipart
 opencv-python
+keybert
+transformers
+sentence-transformers
