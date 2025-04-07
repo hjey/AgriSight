@@ -12,3 +12,8 @@ opencv-python
 keybert
 transformers
 sentence-transformers
+SentencePiece
+spacy
+bert_score
+evaluate
+rouge_score

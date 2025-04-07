@@ -4,10 +4,12 @@ import moviepy.editor as mp
 import subprocess
 import re
 
+video_id = 'UibfDUPJAEU'
+
 # 비디오 파일 경로
-video_path = "video_trimmed.mp4"
-# video = mp.VideoFileClip(video_path)
-# print(f"잘린 영상 길이: {video.duration}초")
+video_path = f"{video_id}_trimmed.mp4"
+video = mp.VideoFileClip(video_path)
+print(f"잘린 영상 길이: {video.duration}초")
 
 # 초반 공백, 자막 시작 지점 계산
 def get_silence_end(video_path):
@@ -18,16 +20,16 @@ def get_silence_end(video_path):
 
 # STT
 def generate_subtitles(video_path):
-    model = whisper.load_model("base")
-    result = model.transcribe(video_path)
+    model = whisper.load_model("medium")
+    result = model.transcribe(video_path, language='en')
     return result["segments"]
 
 # save to srt file of res of whisper
-def save_subtitles_to_srt(subtitles, output_filename="subtitles_trimmed.srt"):
+def save_subtitles_to_srt(subtitles, output_filename=f"{video_id}_trimmed_subtitles.srt"):
     if not subtitles:
         return  # 자막이 없으면 함수 종료
 
-    max_duration = subtitles[-1]["end"]  # 마지막 자막의 종료 시간을 기준으로 설정
+    max_duration = subtitles[-1]["end"]
 
     with open(output_filename, "w", encoding="utf-8") as f:
         for idx, segment in enumerate(subtitles):

@@ -74,7 +74,7 @@ def save_subtitles_to_db(subtitles, video_id, language):
         end_time = segment['end']
         text = segment['text']
 
-        c.execute('''INSERT INTO subtitles (video_id, language, start_time, end_time, text)
+        c.execute('''INSERT OR IGNORE INTO subtitles (video_id, language, start_time, end_time, text)
                      VALUES (?, ?, ?, ?, ?)''', (video_id, language, start_time, end_time, text))
 
     conn.commit()
@@ -99,6 +99,7 @@ def process_video_and_save_subtitles(video_path, video_url, language='en'):
 # DB 생성
 create_db()
 
+video_id = "UibfDUPJAEU"
 # 예제 실행
-video_url = "https://www.youtube.com/watch?v=Gzu9S5FL-Ug"
-process_video_and_save_subtitles('video.mp4', video_url, 'en')
+video_url = f"https://www.youtube.com/watch?v={video_id}"
+process_video_and_save_subtitles(f'{video_id}_trimmed.mp4', video_url, 'en')

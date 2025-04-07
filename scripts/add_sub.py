@@ -1,10 +1,12 @@
 import moviepy.editor as mp
 import srt
 
+video_id = "UibfDUPJAEU"
+
 # 자막 파일 경로와 비디오 파일 경로
-video_path = './data/video_trimmed.mp4'
-subtitle_path = './data/subtitles_trimmed.srt'
-output_video_path = './data/video_trimmed_output.mp4'
+video_path = f'data/{video_id}_trimmed.mp4'
+subtitle_path = f'data/{video_id}_trimmed_subtitles.srt'
+output_video_path = f'data/{video_id}_trimmed_output.mp4'
 
 # 비디오 파일과 오디오 로드
 video = mp.VideoFileClip(video_path)
@@ -36,7 +38,7 @@ def generate_subtitle(clip, subtitles):
         )
 
         # 자막 위치 조정
-        txt_clip = txt_clip.set_position(('center', clip.size[1] - 20 - txt_clip.h)) # 배경박스의 바닥을 기준으로 함, 높이 변화에도 상관 없음
+        txt_clip = txt_clip.set_position(('center', clip.size[1] - 20 - txt_clip.h))  # 배경박스의 바닥을 기준으로 함, 높이 변화에도 상관 없음
 
         # 자막 시간 설정
         txt_clip = txt_clip.set_start(start_time).set_end(end_time)
