@@ -1,3 +1,3 @@
 On progress.
 
-[Watch demo video](./assets/demo.mp4)
+[Watch demo video](./assets/demo.mov)
