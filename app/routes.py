@@ -57,6 +57,9 @@ async def ner_api(video_id: str = Query(...), language: str = Query(...)):
 # 영상 내용의 요약본
 @router.get("/summary")
 async def summary_api(video_id: str = Query(...), language: str = Query(...)):
+    cached = get_summary(video_id, language)
+    if cached:
+        return {"summary": cached}   
     subtitles = get_subtitles(video_id, language)
     if not subtitles:
         return {"error": "No subtitles found"}

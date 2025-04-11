@@ -1,6 +1,11 @@
 from celery import Celery
 from keybert import KeyBERT
-from transformers import pipeline, BartForConditionalGeneration, BartTokenizer, PegasusForConditionalGeneration, PegasusTokenizer
+from transformers import pipeline
+from transformers import BartForConditionalGeneration, BartTokenizer
+from transformers import PegasusForConditionalGeneration, PegasusTokenizer
+
+from db import save_summary
+
 import torch
 import re
 import spacy
@@ -206,6 +211,8 @@ def process_summary(subtitles, max_input_len=1024, max_summary_len=130):
         final_summary = pegasus_summary
         model_used = "Pegasus"
         final_scores = pegasus_scores
+
+    save_summary(video_id, language, model_used, final_summary)
 
     return {
         "final_summary": final_summary,

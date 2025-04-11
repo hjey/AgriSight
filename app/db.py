@@ -39,3 +39,25 @@ def get_title(video_id: str):
     except Exception as e:
         print(f"DB Error: {e}")
         return None
+
+
+def get_summary(video_id: str, language: str):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT summary FROM summaries WHERE video_id = ? AND language = ?",
+        (video_id, language)
+    )
+    result = cursor.fetchone()
+    conn.close()
+    return result[0] if result else None
+
+
+def save_summary(video_id: str, language: str, model: str, summary: str):
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute(
+        '''INSERT OR IGNORE INTO summaries (video_id, language, model, summary)
+            VALUES (?, ?, ?, ?)''', (video_id, language, model, summary))
+    conn.commit()
+    conn.close()
