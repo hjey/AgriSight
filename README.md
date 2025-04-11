@@ -92,4 +92,6 @@ MIT License
 
 
 ## 📺 데모
+![alt text](./assets/image3.png)
+
 [Watch demo video](./assets/demo.mp4)
