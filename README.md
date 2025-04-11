@@ -7,15 +7,15 @@ BART·Pegasus로 요약, BERT·spaCy로 개체명 인식을 수행하여
 ## 📁 프로젝트 구조
 ```
 .
-├── app/ # FastAPI 서버 + Celery
-├── assets/ # 시연영상
-├── data/ # 1분으로 줄인 유투브 영상
+├── app/               # FastAPI 서버 + Celery
+├── assets/            # 시연영상
+├── data/              # 1분으로 줄인 유투브 영상
 ├── docker-compose.yml # Docker 전체 구성 파일
-├── Dockerfile # Docker 설정 파일
-├── package-lock.json # Node.js 고정 패키지 구성 파일
-├── package.json # Node.js 스크립트 정의 패키지 구성 파일
-├── requirements.txt # Python 의존성 목록 (pip 설치용)
-├── scripts/ 전처리 코드
+├── Dockerfile         # Docker 설정 파일
+├── package-lock.json  # Node.js 고정 패키지 구성 파일
+├── package.json       # Node.js 스크립트 정의 패키지 구성 파일
+├── requirements.txt   # Python 의존성 목록 (pip 설치용)
+├── scripts/           # 전처리 코드
 └── README.md
 ```
 
@@ -58,7 +58,7 @@ docker-compose up --build
 
 🧭 시스템 흐름도
 
-![alt text](./assets/image1.png)
+![alt text](./assets/image2.png)
 
 
 ## 📊 모델 비교 결과
