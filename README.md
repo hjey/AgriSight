@@ -58,7 +58,7 @@ docker-compose up --build
 
 🧭 시스템 흐름도
 
-![alt text](./assets/image1.png)
+![alt text](./assets/image2.png)
 
 
 ## 📊 모델 비교 결과
