@@ -1,0 +1,40 @@
+# 환경 변수 파일
+.env
+
+# Python 컴파일 파일
+__pycache__/
+*.py[cod]
+*.pyo
+
+# VSCode, PyCharm 등 IDE 설정
+.vscode/
+.idea/
+
+# 로그, 임시 파일
+*.log
+*.tmp
+*.swp
+
+# OS 관련 파일
+.DS_Store
+Thumbs.db
+
+# Jupyter notebook 체크포인트 (혹시 쓰고 있다면)
+.ipynb_checkpoints/
+
+# Docker 관련
+*.tar
+docker-compose.override.yml  # 개발용으로 로컬에만 두는 경우
+
+# 모델 캐시, 다운로드 파일
+data/
+models/
+*.pt
+*.ckpt
+*.onnx
+*.h5
+*.pickle
+*.joblib
+
+# HuggingFace 캐시
+~/.cache/huggingface

@@ -1,0 +1,21 @@
+# Git과 관련된 파일 제외
+.git
+.gitignore
+
+# 환경설정, 인증 등 민감 파일
+.env
+*.pem
+*.key
+
+# 시스템 파일
+__pycache__/
+*.pyc
+
+# IDE 파일
+.vscode/
+.idea/
+
+# 기타 불필요한 파일
+data/
+notebooks/
+*.log
