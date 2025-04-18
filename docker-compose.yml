@@ -3,15 +3,14 @@ services:
     build: .
     container_name: youtube_subtitle-web
     ports:
-      - "8000:8000"
+      - "${WEB_PORT}:8000"
     depends_on:
       - redis
     volumes:
       - ./app:/app
       - ./data:/data
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    env_file:
+      - .env
 
   redis:
     image: redis:alpine
@@ -30,7 +29,6 @@ services:
     volumes:
       - ./app:/app
       - ./data:/data
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    env_file:
+      - .env
     command: celery -A worker worker --loglevel=info --concurrency=4 --prefetch-multiplier=1
