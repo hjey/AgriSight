@@ -7,6 +7,9 @@ uvicorn
 gunicorn
 celery
 redis
+psycopg2-binary #개발용
+# psycopg2 #배포용
+sqlalchemy
 pytest
 jinja2
 python-multipart
