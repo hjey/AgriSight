@@ -1,4 +1,4 @@
--- sqlite에서 postgresql로 마이그레이션 진행 후 누락 사항 조정
+-- Adjust missing parts after migration from sqlite to postgresql
 
 ALTER TABLE summaries
 ADD CONSTRAINT summaries_video_id_fkey
