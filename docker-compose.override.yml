@@ -4,13 +4,11 @@ services:
   web:
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
     volumes:
-      - ./app:/app
+      - ./backend:/backend
       - ./data:/data
-      - ./requirements.txt:/app/requirements.txt
 
   worker:
     volumes:
-      - ./app:/app
+      - ./backend:/backend
       - ./data:/data
-      - ./requirements.txt:/app/requirements.txt
       - ~/.cache/huggingface:/root/.cache/huggingface

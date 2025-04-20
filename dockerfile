@@ -1,11 +1,11 @@
 # FastAPI 및 Alpine.js를 위한 Dockerfile
 FROM python:3.9-slim
 
-WORKDIR /app
+WORKDIR /backend
 
 # 코드 및 requirements 복사
-COPY ./app /app
-COPY requirements.txt /app
+COPY ./backend /backend
+COPY requirements.txt /backend
 
 # 시스템 패키지 설치 + Python 패키지 설치
 RUN apt-get update && apt-get install -y \
