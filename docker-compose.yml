@@ -39,6 +39,12 @@ services:
       - .env
     command: celery -A worker worker --loglevel=info --concurrency=4 --prefetch-multiplier=1
 
+  summary_server:
+    build: ./inference/summary_server
+    container_name: youtube_summary_server
+    ports:
+      - "8001:8000"
+
 volumes:
   postgres_data:
   redis_data:
