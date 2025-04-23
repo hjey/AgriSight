@@ -2,9 +2,8 @@
 
 FROM python:3.9-slim
 
-WORKDIR /
-
-COPY . .
+WORKDIR /app
+COPY ../inference/summary_server /app
 
 RUN pip install --no-cache-dir transformers torch fastapi uvicorn
 
