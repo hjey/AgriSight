@@ -1,14 +1,15 @@
-# frontend/Dockerfile
+# frontend.dockerfile
 FROM node:18-alpine
-
 WORKDIR /app
+
+COPY ./frontend/package*.json ./
+RUN npm install
 
 COPY ./frontend ./
 
-RUN npm install
-RUN npm run build
+# 개발 환경
+CMD ["npm", "run", "dev"]
 
-EXPOSE 3000
-
-CMD ["npm", "run", "start"]
-
+# 프로덕션 환경 (필요시 주석 해제)
+# RUN npm run build
+# CMD ["npx", "serve", "-s", "out", "-l", "3000"]

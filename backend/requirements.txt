@@ -1,6 +1,3 @@
-torch
-torchvision
-torchaudio
 python-dotenv
 fastapi
 uvicorn
@@ -15,9 +12,7 @@ jinja2
 python-multipart
 opencv-python
 keybert
-transformers==4.36.2
 sentence-transformers
-SentencePiece
 spacy
 bert_score
 evaluate

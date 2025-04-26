@@ -1,5 +1,4 @@
 services:
-
   frontend:
     build:
       context: .
@@ -7,6 +6,8 @@ services:
     container_name: youtube_subtitle-frontend
     ports:
       - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
     depends_on:
       - backend
 
@@ -17,10 +18,10 @@ services:
     container_name: youtube_subtitle-backend
     ports:
       - "${WEB_PORT}:8000"
-    depends_on:
-      - redis
     env_file:
       - .env
+    depends_on:
+      - redis
 
   postgres:
     image: postgres:13
@@ -54,12 +55,11 @@ services:
     working_dir: /backend
     env_file:
       - .env
-    command: celery -A worker worker --loglevel=info --concurrency=4 --prefetch-multiplier=1
 
   summary_server:
     build:
-      context: . # 여기를 수정
-      dockerfile: ./docker/summary_server.dockerfile # 상대 경로 수정
+      context: .
+      dockerfile: ./docker/summary_server.dockerfile
     container_name: youtube_summary_server
     ports:
       - "8001:8000"

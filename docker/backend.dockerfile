@@ -1,13 +1,11 @@
-# FastAPI 및 Alpine.js를 위한 Dockerfile
+# backend.dockerfile
 FROM python:3.9-slim
 
 WORKDIR /backend
 
-# 코드 및 requirements 복사
 COPY ./backend /backend
 COPY ./backend/requirements.txt /backend
 
-# 시스템 패키지 설치 + Python 패키지 설치
 RUN apt-get update && apt-get install -y \
     gcc \
     build-essential \
@@ -17,7 +15,6 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir -r requirements.txt
-
 RUN python -m spacy download en_core_web_sm
 
 EXPOSE 8000
