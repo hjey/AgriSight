@@ -7,9 +7,11 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_API_URL=http://backend:8000
     depends_on:
       - backend
+    networks:
+      - app-network
 
   backend:
     build:
@@ -22,6 +24,8 @@ services:
       - .env
     depends_on:
       - redis
+    networks:
+      - app-network
 
   postgres:
     image: postgres:13
@@ -36,6 +40,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - .env
+    networks:
+      - app-network
 
   redis:
     image: redis:alpine
@@ -43,6 +49,8 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    networks:
+      - app-network
 
   worker:
     build:
@@ -55,6 +63,8 @@ services:
     working_dir: /backend
     env_file:
       - .env
+    networks:
+      - app-network
 
   summary_server:
     build:
@@ -63,6 +73,12 @@ services:
     container_name: youtube_summary_server
     ports:
       - "8001:8000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   postgres_data:

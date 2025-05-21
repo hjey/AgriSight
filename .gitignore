@@ -10,31 +10,61 @@ __pycache__/
 .vscode/
 .idea/
 
+# Node.js 의존성
+frontend/node_modules/
+**/node_modules/
+
 # 로그, 임시 파일
 *.log
 *.tmp
 *.swp
 
-# OS 관련 파일
+# 운영체제 별 불필요 파일
 .DS_Store
 Thumbs.db
 
-# Jupyter notebook 체크포인트 (혹시 쓰고 있다면)
+# Jupyter notebook
 .ipynb_checkpoints/
 
 # Docker 관련
 *.tar
-docker-compose.override.yml  # 개발용으로 로컬에만 두는 경우
+docker-compose.override.yml
 
 # 모델 캐시, 다운로드 파일
-data/
-models/
 *.pt
 *.ckpt
 *.onnx
 *.h5
 *.pickle
 *.joblib
+*.pkl
+*.npy
 
 # HuggingFace 캐시
 ~/.cache/huggingface
+huggingface/
+
+# pyproject.toml 관련 빌드 캐시
+__pypackages__/
+dist/
+build/
+
+# 기타 캐시
+*.cache/
+*.mypy_cache/
+*.pytest_cache/
+*.coverage
+.cache/
+
+# coverage
+htmlcov/
+.coverage*
+
+# next.js build
+frontend/.next/
+frontend/out/
+frontend/.turbo/
+
+# npm/yarn lock 파일 선택적으로 무시 (팀 정책에 따라)
+# package-lock.json
+# yarn.lock
