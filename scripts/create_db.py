@@ -4,7 +4,7 @@ import yt_dlp
 
 # SQLite DB 설정
 def create_db():
-    conn = sqlite3.connect('subtitles.db')
+    conn = sqlite3.connect('data/subtitles.db')
     c = conn.cursor()
 
     # videos 테이블 생성
@@ -28,6 +28,19 @@ def create_db():
             text TEXT NOT NULL,
             FOREIGN KEY (video_id) REFERENCES videos (video_id)
         )
+    ''')
+
+    # summaries 테이블 생성
+    c.execute('''
+    CREATE TABLE IF NOT EXISTS summaries (
+        summary_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        video_id TEXT NOT NULL,
+        language TEXT NOT NULL,
+        model TEXT NOT NULL,
+        summary TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (video_id) REFERENCES subtitles(video_id)
+    )
     ''')
 
     conn.commit()
@@ -99,7 +112,7 @@ def process_video_and_save_subtitles(video_path, video_url, language='en'):
 # DB 생성
 create_db()
 
-video_id = "UibfDUPJAEU"
-# 예제 실행
-video_url = f"https://www.youtube.com/watch?v={video_id}"
-process_video_and_save_subtitles(f'{video_id}_trimmed.mp4', video_url, 'en')
+# video_id = "UibfDUPJAEU"
+# # 예제 실행
+# video_url = f"https://www.youtube.com/watch?v={video_id}"
+# process_video_and_save_subtitles(f'{video_id}_trimmed.mp4', video_url, 'en')

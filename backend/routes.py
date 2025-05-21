@@ -7,15 +7,6 @@ from db import get_subtitles, get_title, get_summary
 router = APIRouter()
 
 
-# 자막용 점보(시작 시간, 끝 시간, 자막) 불러오기 from subtitles table
-@router.get("/subtitles")
-async def subtitle_api(video_id: str = Query(...), language: str = Query(...)):
-    subtitles = get_subtitles(video_id, language)
-    if not subtitles:
-        return JSONResponse(content={"message": "No subtitles found"}, status_code=404)
-    return [{"start_time": sub[0], "end_time": sub[1], "text": sub[2]} for sub in subtitles]
-
-
 # 영상 제목
 @router.get("/title")
 async def title_api(video_id: str = Query(...)):
