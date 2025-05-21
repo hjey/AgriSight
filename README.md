@@ -1,97 +1,90 @@
-# 🧠 유투브 내용 정리기
+# YouTube Subtitle Interpreter
 
-Whisper 모델을 통해 유튜브 영상의 자막을 추출하고,  
-BART·Pegasus로 요약, BERT·spaCy로 개체명 인식을 수행하여  
-요약과 키워드를 웹 UI로 시각화합니다.
 
-## 📁 프로젝트 구조
+## 개요
+사용자가 업로드한 동영상과 자막 파일에서 요약과 키워드, 개체명 인식을 수행하는 머신러닝 웹 서비스.
+Next.js 프론트엔드와 FastAPI 백엔드로 구성되며, 백엔드에서 ML 모델로 텍스트 요약과 NER, 키워드 추출을 처리함.
+
+
+## 주요 기능
+- 동영상과 자막 동시 송출
+- 영상의 내용 요약, NER, 키워드 추출
+- ML 모델을 이용한 자막 자동 생성  
+- 생성된 자막 프론트엔드 실시간 표시  
+- CORS 설정으로 안전한 API 호출  
+- 정적 동영상 파일 프록시 지원
+
+
+## 시스템 구성
+- **Frontend (Next.js)**
+사용자 인터페이스. 업로드, 결과 시각화 담당
+
+- **Backend (FastAPI + Celery)**
+요청 처리, 데이터 저장, 비동기 작업 분배
+
+- **ML 추론 컨테이너**
+사전 학습된 딥러닝 모델로 자막 요약, 키워드 추출, NER 수행
+
+
+## 사용 기술
+**웹 프레임워크:** Next.js, FastAPI
+
+**비동기 처리:** Celery
+
+**머신러닝 모델:**
+- BART (요약)
+- KeyBERT, spaCy (키워드)
+- BERT (NER)
+- 기타: Docker, Docker Compose, Python, Node.js
+
+## 프로젝트 구조
 ```
 .
-├── app/               # FastAPI 서버 + Celery
-├── assets/            # 시연영상
-├── data/              # 1분으로 줄인 유투브 영상
-├── docker-compose.yml # Docker 전체 구성 파일
-├── Dockerfile         # Docker 설정 파일
-├── package-lock.json  # Node.js 고정 패키지 구성 파일
-├── package.json       # Node.js 스크립트 정의 패키지 구성 파일
-├── requirements.txt   # Python 의존성 목록 (pip 설치용)
-├── scripts/           # 전처리 코드
-└── README.md
+├── README.md
+├── assets/                    # 데모 이미지 및 영상, ERD, 플로우차트
+├── backend/                   # FastAPI 백엔드 및 Celery worker
+├── data/                      # 비디오 및 자막 파일
+├── docker/                    # 서비스별 Dockerfile
+├── docker-compose.yml         # 전체 컨테이너 오케스트레이션
+├── docs/                      # 문서 정리
+├── frontend/                  # Next.js 프론트엔드
+├── inference/                 # 추론 서버 코드
+├── scripts/                   # 비디오 전처리 및 자막 생성 스크립트
+├── sql/                       # DB 마이그레이션 SQL
+└── makefile                   # 빌드 및 실행 단축 명령어
 ```
 
-## ✅ 주요 기능
-- Whisper로 자막(STT) 추출 (미국식/영국식 영어)
-- BART·Pegasus 기반 요약 생성 및 성능 비교 (BARTScore)
-- BERT·spaCy 기반 개체명 인식(NER)
-- KeyBERT 기반 키워드 추출
-- Celery 기반 비동기 백엔드 처리
-- FastAPI 서버 REST API 제공
-- Docker 기반 통합 실행 환경
-- SQLite 기반 영상-자막-요약 관리
+## 배포 및 실행
+- CORS 정책은 localhost:3000으로 제한하여 보안 유지  
+- Docker Compose로 모든 서비스 동시 실행 가능  
+- 프론트엔드에서 오는 동영상 요청은 백엔드가 프록시 처리
 
 
-## ⚙️ 환경 요구 사항
-- Python 3.9
-- Node.js (NVM 22)
-- Transformer 4.36.2
-- moviepy 1.0.3
-- Docker, Docker Compose
+## 실행 방법
+1. 프론트엔드 디렉토리에서 `npm install` 실행 (모듈 설치)  
+2. 프로젝트 루트에서 `docker-compose up --build` 실행  
+3. 브라우저에서 `http://localhost:3000` 접속
 
 
-## 🔧 실행 방법 (Docker 기반)
-```bash
-docker-compose up --build
-```
-* 메인 페이지: http://0.0.0.0:8000
+## 플로우차트
+![시스템 흐름도](./assets/flow2.png)
 
 
-🗃️ DB 아키텍처
-
-| 테이블       | 컬럼 구성                                        |
-|------------|------------------------------------------------|
-| subtitles  | video_id, language, start_time, end_time, text |
-| videos     | video_id, title, url, upload_date              |
-| summaries  | video_id, language, model, summary, created_at |
-
-![alt text](./assets/image1.png)
+## DB 구조  
+![DB 구조](./assets/erd.png)
 
 
-🧭 시스템 흐름도
-
-![alt text](./assets/image2.png)
-
-
-## 📊 모델 비교 결과
-| 영상 ID              | 모델     | BERTScore |
-|----------------------|----------|-----------|
-| UibfDUPJAEU (vid001) | BART     | 0.795     |
-| UibfDUPJAEU (vid001) | PEGASUS  | 0.834     |
-| Gzu9S5FL-Ug (vid002) | BART     | 0.529     |
-| Gzu9S5FL-Ug (vid002) | PEGASUS  | 0.526     |
+## 시연 영상 및 이미지
+![서비스 스크린샷](./assets/demo2.png)  
+[Demo 영상 보기](./assets/demo2.mp4)
 
 
-🐞 개발 중 겪은 이슈
+## 향후 계획
+- 키워드 모델 삭제  
+- 제목 앞에 분류 모델 결과 추가
+- 영상 내용 관련 챗봇 기능 도입
+- ChromaDB 연동 예정
 
-- BART와 PEGASUS 모델을 동시에 로드하면 OOM 발생 → 최적의 결과 DB에 저장 후 로드
-- BLEU보다 BERTScore가 요약 품질 구분에 더 적합하다고 판단
-- 모델별 요약 편향이 영상마다 다름 → 결과 비교 필요
-- 멀티 서버가 아닌 단일 서버에서 모델 분리 처리 고민
 
-
-## 📄 라이선스
+## 라이선스
 MIT License
-
-
-## 📌 참고
-    사전학습 모델:
-        facebook/bart-large-cnn
-        google/pegasus-large
-        dslim/bert-base-NER
-        en_core_web_sm
-        sentence-transformers/all-MiniLM-L6-v2
-
-
-## 📺 데모
-![alt text](./assets/image3.png)
-
-[Watch demo video](./assets/demo.mp4)
