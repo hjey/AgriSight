@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = ["hjey <hyejeong.noh@gmail.com>"]
+packages = [{ include = "backend" }]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.14"
+python-dotenv = ">=1.1.0,<2.0.0"
+fastapi = ">=0.115.12,<0.116.0"
+uvicorn = ">=0.34.2,<0.35.0"
+gunicorn = ">=23.0.0,<24.0.0"
+celery = ">=5.5.2,<6.0.0"
+redis = ">=6.1.0,<7.0.0"
+psycopg2-binary = ">=2.9.10,<3.0.0"
+sqlalchemy = ">=2.0.41,<3.0.0"
+python-multipart = ">=0.0.20,<0.0.21"
+opencv-python = ">=4.11.0.86,<5.0.0.0"
+keybert = ">=0.9.0,<0.10.0"
+sentence-transformers = ">=4.1.0,<5.0.0"
+spacy = ">=3.8.7,<4.0.0"
+bert-score = ">=0.3.13,<0.4.0"
+evaluate = ">=0.4.3,<0.5.0"
+rouge-score = ">=0.1.2,<0.2.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
