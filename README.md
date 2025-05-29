@@ -1,8 +1,9 @@
-# YouTube Subtitle Interpreter
+# YouTube Subtitle Analyzer
 
 
 ## 개요
 사용자가 업로드한 동영상과 자막 파일에서 요약과 키워드, 개체명 인식을 수행하는 머신러닝 웹 서비스.
+
 Next.js 프론트엔드와 FastAPI 백엔드로 구성되며, 백엔드에서 ML 모델로 텍스트 요약과 NER, 키워드 추출을 처리함.
 
 
@@ -35,7 +36,8 @@ Next.js 프론트엔드와 FastAPI 백엔드로 구성되며, 백엔드에서 ML
 - BART (요약)
 - KeyBERT, spaCy (키워드)
 - BERT (NER)
-- 기타: Docker, Docker Compose, Python, Node.js
+
+**기타:** Docker, Docker Compose, Python, Node.js
 
 ## 프로젝트 구조
 ```
@@ -82,6 +84,9 @@ Next.js 프론트엔드와 FastAPI 백엔드로 구성되며, 백엔드에서 ML
 ## 향후 계획
 - 키워드 모델 삭제  
 - 제목 앞에 분류 모델 결과 추가
+- Nginx 적용
+- 평가지표 분리
+
 - 영상 내용 관련 챗봇 기능 도입
 - ChromaDB 연동 예정
 
