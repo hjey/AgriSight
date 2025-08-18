@@ -205,6 +205,13 @@ def get_train_transforms(image_size=(256, 256)):
 - 보조 지표: **F1-Score**
 - 출력 임계값: 0.5 (sigmoid 기반 thresholding)
 
+| Validate Metric | Baseline | Optimized |
+| --------------- | -------- | --------- |
+| val\_f1         | 0.2960   | 0.5031    |
+| val\_iou        | 0.0823   | **0.1124**    |
+| val\_loss       | 0.0531   | 0.6945    |
+
+
 ### 모델 저장 및 시각화
 - 최고 성능 모델: checkpoints/best_model-epoch=15-val_iou=0.1124.ckpt 등
 - 시각화 예시: outputs/vis/epoch15_sample23.png
@@ -213,6 +220,29 @@ def get_train_transforms(image_size=(256, 256)):
 ![모델간 비교](./assets/model_comparison.png)  
 
 <br>
+
+
+### 모델 저장 및 시각화
+
+- 최고 성능 모델
+  - Baseline: epoch=10, mIoU=0.09
+  - Optimized: epoch=15, mIoU=0.11
+
+- 추론 결과 비교
+
+  **Baseline**
+  ![baseline](./assets/pred_img_baseline.png)
+
+  **Optimized**
+  ![optimized](./assets/pred_img_optimized.png)
+
+  > 좌: 입력 / 중: GT 마스크 / 우: 예측 마스크
+
+- mIoU 비교
+
+  ![mIoU 비교](./assets/model_comparison.png)
+
+
 
 ---
 
