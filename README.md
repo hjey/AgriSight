@@ -215,8 +215,8 @@ def get_train_transforms(image_size=(256, 256)):
 ### 모델 저장 및 시각화
 
 - 최고 성능 모델
-  - Baseline: epoch=10, mIoU=0.09
-  - Optimized: epoch=15, mIoU=0.11
+  - Baseline: epoch=10, mIoU=0.0823
+  - Optimized: epoch=23, mIoU=0.1210
 
 - 추론 결과 비교
 
