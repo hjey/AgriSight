@@ -208,18 +208,8 @@ def get_train_transforms(image_size=(256, 256)):
 | Validate Metric | Baseline | Optimized |
 | --------------- | -------- | --------- |
 | val\_f1         | 0.2960   | 0.5031    |
-| val\_iou        | 0.0823   | **0.1124**    |
+| val\_iou        | 0.0823   | **0.1210**    |
 | val\_loss       | 0.0531   | 0.6945    |
-
-
-### 모델 저장 및 시각화
-- 최고 성능 모델: checkpoints/best_model-epoch=15-val_iou=0.1124.ckpt 등
-- 시각화 예시: outputs/vis/epoch15_sample23.png
-  - 입력 이미지 / GT 마스크 / 예측 마스크 비교 시각화 가능
-
-![모델간 비교](./assets/model_comparison.png)  
-
-<br>
 
 
 ### 모델 저장 및 시각화
