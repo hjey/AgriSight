@@ -11,7 +11,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function YouTubeAnalyzerLayout({
+export default function AgrisightLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -21,12 +21,11 @@ export default function YouTubeAnalyzerLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} flex flex-col items-center justify-center min-h-screen font-mono overflow-hidden`}>
         <header
           className="w-full max-w-[640px] bg-white shadow-lg p-4 text-center font-semibold text-gray-700 text-2xl font-mono tracking-wider rounded-lg fixed top-8">
-          <p>YouTube Video Analyzer</p>
+          <p>Agricultural image analyzer</p>
         </header>
         <main className="w-full max-w-[1100px] px-12 py-7 bg-white rounded-lg shadow-lg my-28 flex flex-col h-[calc(100vh-180px)]">
           <small className='text-center pb-4 text-gray-500'>
-            Whisper 모델을 통해 유투브 영상의 자막을, BART, Pegasus로 키워드 및 영상 요약본을, BERT,
-            Spacy로 NER을 얻어, 영상과 함께 보여줍니다.
+            농업 관련 인공위성 이미지를 입력하여 Segformer Baseline 모델과 Optimized 모델 비교
           </small>
           {children}
         </main>

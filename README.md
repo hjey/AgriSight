@@ -208,14 +208,16 @@ def get_train_transforms(image_size=(256, 256)):
 | Validate Metric | Baseline | Optimized |
 | --------------- | -------- | --------- |
 | val\_f1         | 0.2960   | 0.5031    |
-| val\_iou        | 0.0823   | **0.1210**    |
+| val\_iou        | 0.0823   | **0.1124**    |
 | val\_loss       | 0.0531   | 0.6945    |
 
 
 ### 모델 저장 및 시각화
 
+![모델간 비교](./assets/model_comparison.png)  
+
 - 최고 성능 모델
-  - Baseline: epoch=10, mIoU=0.0823
+  - Baseline: epoch=11, mIoU=0.0823
   - Optimized: epoch=23, mIoU=0.1210
 
 - 추론 결과 비교
@@ -228,13 +230,93 @@ def get_train_transforms(image_size=(256, 256)):
 
   > 좌: 입력 / 중: GT 마스크 / 우: 예측 마스크
 
-- mIoU 비교
+### 웹 인터페이스 결과
 
-  ![mIoU 비교](./assets/model_comparison.png)
+**클래스 범례**
+- ■ **cloud_shadow**: 구름 그림자 (빨강)
+- ■ **double_plant**: 이중 식물 (노랑)  
+- ■ **planter_skip**: 파종기 누락 (시안)
+- ■ **standing_water**: 고인 물 (보라)
+- ■ **waterway**: 수로 (주황)
+- ■ **weed_cluster**: 잡초 무리 (마젠타)
 
+**Baseline 모델**
+![Baseline 웹 결과](./assets/web_baseline_result.png)
 
+**Optimized 모델**  
+![Optimized 웹 결과](./assets/web_optimized_result.png)
 
 ---
 
-## 스킬 스택
-**Python**, **PyTorch**, **PyTorch Lightning**, **Albumentations**, **OpenCV**, **Transformers (HuggingFace)**, **TorchMetrics**, **Matplotlib**, **Numpy**, **Jupyter Notebook**
+## 시스템 구성
+### 전체 아키텍처
+
+- **Frontend (Next.js)**: 이미지 업로드 및 세그멘테이션 결과 시각화
+- **Backend (FastAPI)**: API 게이트웨이, 요청 라우팅
+- **ML 추론 서버 (FastAPI + ONNX)**: SegFormer 모델 기반 실시간 이미지 세그멘테이션
+- **Redis**: Celery 브로커 및 캐싱
+- **Docker**: 마이크로서비스 컨테이너화
+
+### 주요 기능
+
+- 실시간 이미지 업로드: 다양한 형식의 농업 이미지 지원
+- 다중 모델 지원: Baseline vs Optimized SegFormer 모델 비교
+- **ONNX** 최적화: PyTorch → ONNX 변환으로 추론 속도 향상
+- 시각화: 클래스별 색상 마스킹 및 범례 제공
+
+<br>
+
+---
+
+## 프로젝트 구조
+```
+agrisight/
+├── README.md
+├── Makefile
+├── docker-compose.yml
+├── backend/
+│   ├── main.py                # FastAPI 메인 서버
+│   └── routes.py              # API 라우팅
+├── frontend/
+│   ├── src/app/page.tsx       # 메인 페이지
+│   └── src/components/        # UI 컴포넌트
+├── inference/
+│   ├── app.py                 # 추론 서버 (ONNX)
+│   ├── model.py               # SegFormer 모델
+│   └── models/
+│       ├── *.ckpt             # PyTorch 체크포인트
+│       ├── *.onnx             # ONNX 모델
+│       └── convert_to_onnx.py # 변환 스크립트
+├── docker/                    # Dockerfile들
+├── scripts/                   # 학습 노트북들
+└── assets/                    # README 이미지
+```
+---
+
+## 기술 스택
+
+### ML & Backend
+- **PyTorch Lightning**, **ONNX Runtime**: 모델 학습 및 추론
+- **FastAPI**: ML 추론 서버
+- **HuggingFace Transformers**: 사전훈련 모델
+
+### Frontend & DevOps  
+- **Next.js + TypeScript**: 웹 인터페이스
+- **Docker Compose**: 컨테이너 오케스트레이션
+---
+
+## 실행 방법
+```bash
+# 실행
+make up
+
+# ONNX 변환 (최초 1회)
+make convert-onnx
+
+# 접속: http://localhost:3000
+```
+---
+
+## 라이센스
+
+MIT License

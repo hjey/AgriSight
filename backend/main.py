@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 from routes import router
 from dotenv import load_dotenv
 from db import check_postgres_connection
@@ -15,9 +14,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 app.include_router(router)
-app.mount("/videos", StaticFiles(directory="/data"), name="videos")
 
 @app.on_event("startup")
 async def startup():

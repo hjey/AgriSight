@@ -1,13 +1,28 @@
 // src/lib/api.ts
-const baseApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8000';
-const API_URL = typeof window === 'undefined'
-    ? baseApiUrl  // 서버 사이드에서는 원래 URL 사용
-    : baseApiUrl.replace('backend', 'localhost');  // 클라이언트 사이드에서는 localhost로 변경
+export async function segmentImageAPI(file: File, modelType: string) {
+    // 프론트 → 백엔드 호출
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    console.log('API Base URL:', baseUrl); // 디버깅용
 
-export async function fetchFromAPI<T>(endpoint: string): Promise<T> {
-    const response = await fetch(`${API_URL}${endpoint}`);
-    if (!response.ok) {
-        throw new Error(`API error: ${response.statusText}`);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("model_type", modelType || "baseline");
+
+    try {
+        // 백엔드에서 프록시 처리하므로 추론 경로 없음, 백엔드 라우터 프리픽스 포함
+        const response = await fetch(`${baseUrl}/backend/segment`, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const text = await response.text().catch(() => "");
+            throw new Error(`HTTP ${response.status} ${response.statusText} - ${text}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('API call failed:', error);
+        throw error;
     }
-    return await response.json() as T;
 }

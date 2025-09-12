@@ -22,7 +22,6 @@ notebooks/
 .idea/
 
 # 테스트 및 데이터
-data/
 *.tmp
 *.swp
 

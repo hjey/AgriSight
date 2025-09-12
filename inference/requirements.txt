@@ -1,0 +1,24 @@
+torch>=2.8.0
+transformers>=4.56.0
+fastapi>=0.115.0
+uvicorn>=0.35.0
+pillow>=10.4.0
+python-multipart>=0.0.20
+
+# model
+albumentations>=1.3.0
+segmentation-models-pytorch>=0.3.1
+matplotlib>=3.7.0
+numpy>=1.26.0
+
+# Lightning
+pytorch-lightning>=2.5.0
+torchmetrics>=1.4.0
+
+# 추가 의존성
+jsonargparse[signatures]>=4.21.0  # Lightning config 파싱용 (필요시)
+lightning>=2.5.0  # unified lightning package (선택사항)
+
+# onnx
+onnx
+onnxruntime

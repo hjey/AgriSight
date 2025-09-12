@@ -1,52 +1,51 @@
-from fastapi import APIRouter, Query
+# # backend/routes.py
+
+import httpx
+from fastapi import APIRouter, UploadFile, File, Form
 from fastapi.responses import JSONResponse
-from worker import extract_keywords, process_ner, process_summary
-from db import get_subtitles, get_title, get_summary
 
+router = APIRouter(prefix="/backend")
 
-router = APIRouter()
+INFERENCE_URL = "http://inference:8000/segment"
 
-
-# 영상 제목
-@router.get("/title")
-async def title_api(video_id: str = Query(...)):
-    title = get_title(video_id)
-    if not title:
-        return JSONResponse(content={"message": "No title found"}, status_code=404)
-    return {"title": title[0][0]}
-
-
-# 영상 내용의 키워드
-@router.get("/keyword")
-async def keyword_api(video_id: str = Query(...), language: str = Query(...)):
-    subtitles = get_subtitles(video_id, language)
-    if not subtitles:
-        return {"error": "No subtitles found"}
-    text = " ".join([sub[2] for sub in subtitles])
-    keywords = extract_keywords(text)
-    return {"keywords": keywords}
-
-
-# 영상 내용의 NER
-@router.get("/ner")
-async def ner_api(video_id: str = Query(...), language: str = Query(...)):
-    subtitles = get_subtitles(video_id, language)
-    if not subtitles:
-        return {"error": "No subtitles found"}
-    ner_result = process_ner(subtitles)
-    return {"ner": ner_result}
-
-
-# 영상 내용의 요약본
-@router.get("/summary")
-async def summary_api(video_id: str, language: str, model: str = 'bart'):
-    # 먼저 DB에 요약이 있는지 확인
-    cached = get_summary(video_id, language, model) # from DB
-    if cached:
-        return {"summary": cached}
-    else:
-        subtitles = get_subtitles(video_id, language)
-        if not subtitles:
-            return {"error": "No subtitles found"}    
-        task = process_summary(subtitles, video_id, language, model)
-        return {"summary": task['final_summary']}
+@router.post("/segment")
+async def segment_image(file: UploadFile = File(...), model_type: str = Form("baseline")):
+    try:
+        print(f"Received file: {file.filename}, size: {file.size}, type: {file.content_type}")
+        print(f"Model type: {model_type}")
+        
+        files = {"image": (file.filename, await file.read(), file.content_type)}
+        data = {"model_type": model_type}
+        
+        print(f"Sending request to inference server: {INFERENCE_URL}")
+        
+        async with httpx.AsyncClient(timeout=60.0) as client:  # 타임아웃 늘림
+            response = await client.post(INFERENCE_URL, files=files, data=data)
+            print(f"Inference response status: {response.status_code}")
+            
+            response.raise_for_status()
+            
+            # 응답 내용 확인
+            result = response.json()
+            print(f"Inference result keys: {list(result.keys()) if isinstance(result, dict) else 'Not a dict'}")
+            
+            return result
+            
+    except httpx.HTTPStatusError as e:
+        error_msg = f"Inference server error {e.response.status_code}"
+        try:
+            error_detail = e.response.json()
+            error_msg += f": {error_detail}"
+        except:
+            error_msg += f": {e.response.text}"
+            
+        print(f"HTTPStatusError: {error_msg}")
+        return JSONResponse({"error": error_msg}, status_code=500)
+        
+    except httpx.TimeoutException:
+        print("Timeout error")
+        return JSONResponse({"error": "Request timeout"}, status_code=500)
+        
+    except Exception as e:
+        print(f"Unexpected error: {type(e).__name__}: {str(e)}")
+        return JSONResponse({"error": f"Internal error: {str(e)}"}, status_code=500)

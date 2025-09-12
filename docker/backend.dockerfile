@@ -30,7 +30,7 @@ WORKDIR /app
 COPY ./backend/pyproject.toml ./backend/poetry.lock* ./
 
 # 의존성 설치 (개발 의존성 제외)
-RUN poetry install --no-interaction --no-ansi --no-dev --timeout=600
+RUN poetry install --no-interaction --no-ansi --only main
 
 # ============= 런타임 스테이지 =============
 FROM python:3.12-slim as runtime
@@ -38,7 +38,7 @@ FROM python:3.12-slim as runtime
 # 런타임에만 필요한 라이브러리들 설치
 RUN apt-get update && apt-get install -y \
     libpq5 \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     libsm6 \
     libxext6 \

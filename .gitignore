@@ -32,8 +32,8 @@ docker-compose.override.yml
 
 # 모델 캐시, 다운로드 파일
 *.pt
-*.ckpt
 *.onnx
+*.ckpt
 *.h5
 *.pickle
 *.joblib
@@ -66,5 +66,5 @@ frontend/out/
 frontend/.turbo/
 
 # npm/yarn lock 파일 선택적으로 무시 (팀 정책에 따라)
-# package-lock.json
-# yarn.lock
+package-lock.json
+yarn.lock

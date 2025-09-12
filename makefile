@@ -1,80 +1,63 @@
-### 기본 명령 ###
+# 기본 명령어
 up:
-	docker-compose up --build
+	docker-compose up -d
 
 down:
 	docker-compose down
 
-restart:
-	docker-compose stop backend worker
-	docker-compose up --build -d backend worker
+build:
+	docker-compose build --no-cache
+
+rebuild:
+	docker-compose down
+	docker-compose build --no-cache
+	docker-compose up -d
 
 logs:
 	docker-compose logs -f
 
+status:
+	docker-compose ps
 
-### 단독 실행 ###
+# 개별 서비스
 frontend:
-	docker-compose up --build frontend
-
-backend:
-	docker-compose up --build backend
-
-summary:
-	docker-compose up --build summary_server
-
-
-### 단독 실행 (백그라운드) ###
-frontend-d:
 	docker-compose up -d frontend
 
-backend-d:
+backend:
 	docker-compose up -d backend
 
-summary-d:
-	docker-compose up -d summary_server
+inference:
+	docker-compose up -d inference
 
-
-### 개발 모드 ###
+# 개발용 (로그 보면서)
 dev:
-	docker-compose up -d postgres redis summary_server
-	docker-compose up backend frontend worker
+	docker-compose up
 
-back-dev:
-	docker-compose exec backend uvicorn main:app --reload --host 0.0.0.0 --port 8000
+# ONNX 변환
+convert-onnx:
+	docker exec -it $$(docker-compose ps -q inference) bash -c "cd /app/models && python convert_to_onnx.py"
 
+check-onnx:
+	docker exec -it $$(docker-compose ps -q inference) ls -la /app/models/*.onnx
 
-### 운영 모드 ###
-prod:
-	docker-compose up --build -d
-
-back-prod:
-	docker-compose exec backend gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000
-
-
-### 캐시 없이 실행 (프론트엔드) ###
-web-dev-nocache:
-	docker-compose stop backend frontend
-	docker-compose rm -f backend frontend
-	docker-compose up -d postgres redis summary_server
-	NEXT_SKIP_CACHE=1 docker-compose up backend frontend worker
-
-
-### 정리 작업 ###
-clean-web:
-	docker-compose stop backend frontend
-	docker-compose rm -f backend frontend
-
+# 완전 정리
 clean:
-	docker-compose rm -sf backend worker
-	docker-compose up --build -d backend worker
-
-clean-all:
 	docker-compose down --volumes --remove-orphans
-	docker volume prune -f
+	docker system prune -f
 
+# 컨테이너 접속
+shell-backend:
+	docker exec -it $$(docker-compose ps -q backend) bash
 
-### 워커 ###
-worker:
-	docker-compose exec worker celery -A worker worker --loglevel=info
+shell-inference:
+	docker exec -it $$(docker-compose ps -q inference) bash
 
+# 도움말
+help:
+	@echo "사용 가능한 명령어:"
+	@echo "  up          - 모든 서비스 백그라운드 실행"
+	@echo "  down        - 모든 서비스 중지"
+	@echo "  dev         - 로그 보면서 실행"
+	@echo "  logs        - 로그 보기"
+	@echo "  convert-onnx - ONNX 변환 실행"
+	@echo "  clean       - 완전 정리"
