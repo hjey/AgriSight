@@ -1,0 +1,25 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build Docker Images
+      run: |
+        docker-compose build --no-cache
+    
+    - name: Run Health Checks
+      run: |
+        docker-compose up -d
+        sleep 30
+        curl -f http://localhost:3000 || exit 1
+        curl -f http://localhost:8000/health || exit 1
+        docker-compose down
