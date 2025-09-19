@@ -263,21 +263,21 @@ agrisight/
 ├── Makefile
 ├── docker-compose.yml
 ├── backend/
-│   ├── main.py                # FastAPI 메인 서버
-│   └── routes.py              # API 라우팅
+│   ├── main.py                # FastAPI main server
+│   └── routes.py              # API routing
 ├── frontend/
-│   ├── src/app/page.tsx       # 메인 페이지
-│   └── src/components/        # UI 컴포넌트
+│   ├── src/app/page.tsx       # Main page
+│   └── src/components/        # UI components
 ├── inference/
-│   ├── app.py                 # 추론 서버 (ONNX)
-│   ├── model.py               # SegFormer 모델
+│   ├── app.py                 # Inference server (ONNX)
+│   ├── model.py               # SegFormer model
 │   └── models/
-│       ├── *.ckpt             # PyTorch 체크포인트
-│       ├── *.onnx             # ONNX 모델
-│       └── convert_to_onnx.py # 변환 스크립트
-├── docker/                    # Dockerfile들
-├── scripts/                   # 학습 노트북들
-└── assets/                    # README 이미지
+│       ├── *.ckpt             # PyTorch checkpoints
+│       ├── *.onnx             # ONNX models
+│       └── convert_to_onnx.py # Conversion script
+├── docker/                    # Dockerfiles
+├── scripts/                   # Training notebooks
+└── assets/                    # README images
 ```
 ---
 
